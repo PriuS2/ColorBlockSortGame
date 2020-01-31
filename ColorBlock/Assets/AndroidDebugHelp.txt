@@ -1,0 +1,8 @@
+C:\androidSDK\platform-tools //adb directory
+
+//녹스
+adb.exe devices //접속된 디바이스 목록 확인
+adb.exe connect 127.0.0.1:62001
+
+//Logcat
+adb logcat -s Unity

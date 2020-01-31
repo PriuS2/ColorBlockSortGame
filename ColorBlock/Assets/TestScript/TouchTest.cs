@@ -10,14 +10,23 @@ public class TouchTest : MonoBehaviour
     private Camera mainCam;
     private int screenWidth;
     private int screenHeight;
-    
+
+    public bool showTouchPoint = false;
+    private Transform _pointer;
+    private SpriteRenderer _pointer_SpriteRenderer;
+
+    public Vector3 CursorPositon;
     
     // Start is called before the first frame update
     void Start()
     {
+        _pointer = transform.Find("Pointer");
+        _pointer_SpriteRenderer = _pointer.GetComponent<SpriteRenderer>();
         mainCam= Camera.main;
         screenWidth = Screen.width;
         screenHeight = Screen.height;
+
+        _pointer_SpriteRenderer.enabled = showTouchPoint;
     }
 
     // Update is called once per frame
@@ -28,13 +37,19 @@ public class TouchTest : MonoBehaviour
 #if UNITY_ANDROID
         if (Input.touchCount > 0)
         {
-            //Debug.Log("Touch!! : "+ Input.touchCount);
             Touch touch = Input.GetTouch(0);
-            Vector3 touchPoint = mainCam.ScreenToWorldPoint(touch.position);
-            //Debug.Log("TouchPoint = "+ touchPoint);
-            //Debug.DrawLine(Vector3.zero, touchPoint, Color.magenta);
-            var temp = new Vector3(touchPoint.x, touchPoint.y, -1);
+            CursorPositon = mainCam.ScreenToWorldPoint(touch.position);
+            
+            //Debug
+            var temp = new Vector3(CursorPositon.x, CursorPositon.y, -1);
             transform.position = temp;
+            
+            
+            
+        }
+        else
+        {
+            transform.position = new Vector3(0,0,-20);
         }
 #endif
         
@@ -49,10 +64,22 @@ public class TouchTest : MonoBehaviour
         
         if (checkWidth & checkHeight)
         {
-            Vector3 mousePoint = mainCam.ScreenToWorldPoint(mousePosition);
-            var temp = new Vector3(mousePoint.x, mousePoint.y, -1);
+            Vector3 CursorPositon = mainCam.ScreenToWorldPoint(mousePosition);
+            var temp = new Vector3(CursorPositon.x, CursorPositon.y, -1);
             transform.position = temp;
-            Debug.Log(mousePoint);
+            Debug.Log(CursorPositon);
+
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                _pointer_SpriteRenderer.color = Color.black;
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                _pointer_SpriteRenderer.color = Color.white;
+            }
+            
+            
         }
         else
         {
@@ -61,13 +88,7 @@ public class TouchTest : MonoBehaviour
 
 
 #endif
-
-
-
-
-
-
-
+        
     }
 
 }
