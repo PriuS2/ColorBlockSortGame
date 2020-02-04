@@ -6,6 +6,7 @@ public class InputSystem_Ingame : MonoBehaviour
 {
     [Tooltip("if check show touch point")] public bool showTouchPoint;
 
+    public ColorBlockManager colorBlockManager;
     private Camera mainCam;
 
 
@@ -39,21 +40,38 @@ public class InputSystem_Ingame : MonoBehaviour
 //__________Unity Editor__________
 #if UNITY_EDITOR
         var mousePosition = Input.mousePosition;
-        
-        //Cursor position debug
-        if (showTouchPoint)
+
+        // if (showTouchPoint)
+        // {
+        var xPosOnScreen = mousePosition.x >= 0 & mousePosition.x <= _screenWidth;
+        var yPosOnScreen = mousePosition.y >= 0 & mousePosition.y <= _screenHeight;
+
+
+        //화면위에 커서있음
+        if (xPosOnScreen & yPosOnScreen)
         {
-            var xPosOnScreen = mousePosition.x >= 0 & mousePosition.x <= _screenWidth;
-            var yPosOnScreen = mousePosition.y >= 0 & mousePosition.y <= _screenHeight;
-            if (xPosOnScreen & yPosOnScreen)//화면안에 커서있음
+            var pos = mainCam.ScreenToWorldPoint(mousePosition);
+            //Debug.Log(pos);
+            _cursor.position = new Vector3(pos.x, pos.y, -2);
+            ;
+
+            if (Input.GetMouseButtonDown(0)) //마우스 왼클릭 Down
             {
-            
+                _cursorSpriteRenderer.color = Color.black;
+
+                colorBlockManager.Attach(_cursor);
             }
-            else//화면안에 커서없음
+            else if (Input.GetMouseButtonUp(0)) //마우스 왼클릭 Up
             {
-                
+                _cursorSpriteRenderer.color = Color.white;
+                colorBlockManager.Detach(_cursor);
             }
         }
+        else //화면밖에 커서있음
+        {
+            _cursor.position = Vector3.forward * -20;
+        }
+        //      }
 #endif
 
 //__________Android__________
@@ -63,7 +81,7 @@ public class InputSystem_Ingame : MonoBehaviour
             Touch touch = Input.GetTouch(0);
 
             TouchPositon = mainCam.ScreenToWorldPoint(touch.position);
-
+            Debug.Log(TouchPositon);
             //Touch position debug
             if (showTouchPoint)
             {
@@ -74,20 +92,20 @@ public class InputSystem_Ingame : MonoBehaviour
             switch (touch.phase)
             {
                 case TouchPhase.Began:
-                    Debug.Log("Began Touch");
-                    BeganTouch();
+                    //Debug.Log("Began Touch");
+                    BeganTouch(TouchPositon);
                     break;
                 case TouchPhase.Moved:
-                    Debug.Log("Moved Touch");
-                    MovedTouch();
+                    //Debug.Log("Moved Touch");
+                    MovedTouch(TouchPositon);
                     break;
                 case TouchPhase.Stationary:
-                    Debug.Log("Stationary Touch");
-                    StationaryTouch();
+                    //Debug.Log("Stationary Touch");
+                    StationaryTouch(TouchPositon);
                     break;
                 case TouchPhase.Ended:
-                    Debug.Log("Ended Touch");
-                    EndedTouch();
+                    //Debug.Log("Ended Touch");
+                    EndedTouch(TouchPositon);
                     break;
             }
         }
@@ -95,19 +113,25 @@ public class InputSystem_Ingame : MonoBehaviour
     }
 
 
-    private void BeganTouch()
+    //touch Fx
+    private void BeganTouch(Vector3 touchPosition)
     {
+        _cursor.position = new Vector3(touchPosition.x, touchPosition.y, -2);
+        colorBlockManager.Attach(_cursor);
     }
 
-    private void MovedTouch()
+    private void MovedTouch(Vector3 touchPosition)
     {
+        _cursor.position = new Vector3(touchPosition.x, touchPosition.y, -2);
     }
 
-    private void StationaryTouch()
+    private void StationaryTouch(Vector3 touchPosition)
     {
+
     }
 
-    private void EndedTouch()
+    private void EndedTouch(Vector3 touchPosition)
     {
+        colorBlockManager.Detach(_cursor);
     }
 }

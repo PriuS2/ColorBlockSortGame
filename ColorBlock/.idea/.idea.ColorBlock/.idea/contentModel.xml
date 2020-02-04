@@ -6,6 +6,7 @@
     <e p="D:\Unity Projects\ColorBlockGit\ColorBlock" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="AndroidDebugHelp.txt" t="Include" />
         <e p="Scripts" t="Include">
           <e p="ColorBlock.cs" t="Include" />
           <e p="ColorBlockManager.cs" t="Include" />

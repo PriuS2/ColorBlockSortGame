@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 2622051422851995661}
   - component: {fileID: 2622051422851995660}
   - component: {fileID: 2778399554700396439}
+  - component: {fileID: 7887870570444982677}
   m_Layer: 0
   m_Name: ColorBlock
   m_TagString: Untagged
@@ -175,4 +176,17 @@ MonoBehaviour:
   spriteColor: {r: 0, g: 0, b: 0, a: 0}
   isCorrect: 0
   isFixedBlock: 0
-  _correctPos: {x: 0, y: 0}
+  correctPos: {x: 0, y: 0}
+--- !u!65 &7887870570444982677
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2622051422851995658}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
